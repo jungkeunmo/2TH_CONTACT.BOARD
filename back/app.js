@@ -92,6 +92,7 @@ app.get("/api/list", (req, res) => {
     const selectQuery = `
     SELECT id,
            title,
+           pass,
            author,
            DATE_FORMAT(createdAt, "%Y.%m.%d") AS formatCreatedAt,
            content,
@@ -154,6 +155,24 @@ app.post("/api/delete", (req, res) => {
         }
 
         return res.status(200).send("게시글 삭제성공")
+    });
+});
+
+app.post("/api/deleteCheck", (req, res) => {
+    const { deleteId } = req.body;
+
+    const deleteIdQuery = `
+        DELETE  FROM    board
+         WHERE  id = ${deleteId}
+    `;
+
+    db.query(deleteIdQuery, (error, result) => {
+        if(error) {
+            console.log(error);
+            return;
+        }
+
+        return res.status(200).send("삭제 성공");
     });
 });
 
